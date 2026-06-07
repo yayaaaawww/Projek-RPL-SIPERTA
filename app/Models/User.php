@@ -2,43 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name', 'email', 'password', 'role',
+        'no_hp', 'alamat', 'no_rekening', 'bidang', 'status'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function tanaman() { return $this->hasMany(Tanaman::class); }
+    public function konsultasiSebagaiPetani() { return $this->hasMany(Konsultasi::class, 'petani_id'); }
+    public function konsultasiSebagaiAhli() { return $this->hasMany(Konsultasi::class, 'ahli_id'); }
+    public function pesananSebagaiPedagang() { return $this->hasMany(Pesanan::class, 'pedagang_id'); }
+    public function pesananSebagaiPetani() { return $this->hasMany(Pesanan::class, 'petani_id'); }
+    public function laporan() { return $this->hasMany(Laporan::class, 'pelapor_id'); }
 }
