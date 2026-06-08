@@ -27,7 +27,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:petani')->prefix('petani')->group(function () {
         Route::get('/dashboard', [PetaniController::class, 'dashboard']);
         Route::apiResource('tanaman', TanamanController::class);
-        Route::apiResource('tanaman/{tanaman}/perawatan', PerawatanController::class);
+        
+        // Perawatan 
+        Route::get('tanaman/{tanaman}/perawatan', [PerawatanController::class, 'index']);
+        Route::post('tanaman/{tanaman}/perawatan', [PerawatanController::class, 'store']);
+        Route::get('tanaman/{tanaman}/perawatan/{perawatan}', [PerawatanController::class, 'show']);
+        Route::put('tanaman/{tanaman}/perawatan/{perawatan}', [PerawatanController::class, 'update']);
+        Route::delete('tanaman/{tanaman}/perawatan/{perawatan}', [PerawatanController::class, 'destroy']);
+
         Route::apiResource('panen', PanenController::class);
         Route::apiResource('konsultasi', KonsultasiController::class);
         Route::get('/laporan', [LaporanController::class, 'index']);
