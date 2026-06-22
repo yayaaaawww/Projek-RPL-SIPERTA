@@ -28,12 +28,24 @@
 
                     <label class="form-label">Kegiatan yang dilakukan:</label>
                     <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="penyemaian" value="1" id="penyemaian" {{ old('penyemaian') ? 'checked' : '' }}>
+                        <label class="form-check-label" for="penyiraman">Penyemaian</label>
+                    </div>
+                    <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="penyiraman" value="1" id="penyiraman" {{ old('penyiraman') ? 'checked' : '' }}>
                         <label class="form-check-label" for="penyiraman">Penyiraman</label>
                     </div>
                     <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="pemangkasan" value="1" id="pemangkasan" {{ old('pemangkasan') ? 'checked' : '' }}>
+                        <label class="form-check-label" for="penyiraman">Pemangkasan</label>
+                    </div>
+                    <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="pemupukan" value="1" id="pemupukan" {{ old('pemupukan') ? 'checked' : '' }}>
                         <label class="form-check-label" for="pemupukan">Pemupukan</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="pengecekan" value="1" id="pengecekan" {{ old('pengecekan') ? 'checked' : '' }}>
+                        <label class="form-check-label" for="penyiangan">Pengecekan</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="penyiangan" value="1" id="penyiangan" {{ old('penyiangan') ? 'checked' : '' }}>
@@ -68,9 +80,12 @@
                                 <tr>
                                     <td>{{ \Carbon\Carbon::parse($p->tanggal_perawatan)->format('d M Y') }}</td>
                                     <td>
+                                        @if ($p->penyemaian) <span class="badge bg-info">Semai</span> @endif
                                         @if ($p->penyiraman) <span class="badge bg-info">Siram</span> @endif
+                                        @if ($p->pangkas) <span class="badge bg-info">Pangkas</span> @endif
                                         @if ($p->pemupukan) <span class="badge bg-success">Pupuk</span> @endif
-                                        @if ($p->penyiangan) <span class="badge bg-warning text-dark">Siang</span> @endif
+                                        @if ($p->pengecekan) <span class="badge bg-warning text-dark">Cek</span> @endif
+                                        @if ($p->penyiangan) <span class="badge bg-warning text-dark">Penyiangan</span> @endif
                                         @if ($p->pestisida) <span class="badge bg-danger">Pestisida</span> @endif
                                     </td>
                                     <td>{{ $p->catatan ?? '-' }}</td>
