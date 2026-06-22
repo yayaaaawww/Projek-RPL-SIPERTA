@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SIPERTA</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../asset/style.css">
+</head>
+<body>
+    <div class="d-flex">
+        <div class="sidebar p-3">
+
+            <a href="dashboardP.html">
+                <i class="bi bi-house-door"></i>
+            </a>
+
+            <a href="konsultasi.html">
+                <i class="bi bi-chat-left"></i>
+            </a>
+
+            <a href="laporanP.html">
+                <i class="bi bi-exclamation-triangle"></i>
+            </a>
+
+            <a href="katalogP.html">    
+                <i class="bi bi-cart-plus"></i>
+            </a>
+
+            <hr class="text-white">
+
+            <a href="../auth/login.html">
+                <i class="bi bi-box-arrow-right"></i>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+
+        <div class="dashboard-header">
+            <h1 class="title">SIPERTA</h1>
+
+            <div class="header-right">
+
+                <a href="keranjang.html" class="cart-btn">
+                    <i class="bi bi-cart3"></i>
+                    <span class="cart-badge"></span>
+                </a>
+
+                <a href="profileP.html" class="profile">
+                    <i class="bi bi-person-circle"></i>
+                    <span>Profile</span>
+                </a>
+
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <h2 class="page-title">Laporan</h2>
+
+            <div class="dashboard-content">
+
+            <div class="laporan-card">
+
+                <h5>Data Laporan</h5>
+
+                <input
+                    type="text"
+                    class="laporan-input"
+                    placeholder="Nama yang Dilaporkan">
+
+                <select class="laporan-input">
+
+                    <option>Pilih Role</option>
+                    <option>Petani</option>
+                    <option>Ahli</option>
+
+                </select>
+
+                <textarea
+                    class="laporan-textarea"
+                    placeholder="Alasan">
+                </textarea>
+
+                <input
+                    type="file"
+                    class="laporan-input">
+
+                <button class="btn-simpan">
+                    Simpan
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+function kirimLaporan()
+{
+    let laporan =
+    JSON.parse(
+        localStorage.getItem("laporan")
+    ) || [];
+
+    laporan.push({
+
+        pelapor : "Petani",
+
+        terlapor :
+        document.getElementById("terlapor").value,
+
+        role :
+        document.getElementById("role").value,
+
+        alasan :
+        document.getElementById("alasan").value
+
+    });
+
+    localStorage.setItem(
+        "laporan",
+        JSON.stringify(laporan)
+    );
+
+    alert("Laporan berhasil dikirim");
+
+    document.getElementById("terlapor").value = "";
+    document.getElementById("role").selectedIndex = 0;
+    document.getElementById("alasan").value = "";
+}
+
+</script>
+
+</body>
+</html>

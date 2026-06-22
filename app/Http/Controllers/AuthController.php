@@ -6,21 +6,32 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    // Tampilkan halaman
+    public function showLogin()
+    {
+        return view('auth.login');
+    }
+
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
+
+    // Proses register
     public function register(Request $request)
     {
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users',
-            'password' => 'required|min:8|confirmed',
-            'role'     => 'required|in:petani,ahli,pedagang',
-            'no_hp'    => 'nullable|string',
-            'alamat'   => 'nullable|string',
+            'name'        => 'required|string|max:255',
+            'email'       => 'required|email|unique:users',
+            'password'    => 'required|min:8|confirmed',
+            'role'        => 'required|in:petani,ahli,pedagang',
+            'no_hp'       => 'nullable|string',
+            'alamat'      => 'nullable|string',
             'no_rekening' => 'nullable|string',
-            'bidang'   => 'nullable|string',
+            'bidang'      => 'nullable|string',
         ]);
 
         $user = User::create([
@@ -36,48 +47,49 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
+        $request->session()->regenerate();
 
-        return response()->json([
-            'message' => 'Registrasi berhasil',
-            'user'    => $user,
-        ], 201);
+        return redirect()->route($user->role . '.dashboard')
+            ->with('success', 'Registrasi berhasil, selamat datang!');
     }
 
+    // Proses login
     public function login(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email'    => 'required|email',
             'password' => 'required',
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            throw ValidationException::withMessages([
-                'email' => 'Email atau password salah.',
-            ]);
+        if (! Auth::attempt($credentials)) {
+            return back()
+                ->withErrors(['email' => 'Email atau password salah.'])
+                ->onlyInput('email');
         }
 
         $user = Auth::user();
 
+        // Cek akun diblokir
         if ($user->status === 'suspended') {
             Auth::logout();
-            return response()->json(['message' => 'Akun kamu telah diblokir.'], 403);
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return back()->withErrors(['email' => 'Akun kamu telah diblokir.']);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $request->session()->regenerate();
 
-        return response()->json([
-            'message' => 'Login berhasil',
-            'user'    => $user,
-            'token'   => $token,
-            'role'    => $user->role,
-        ]);
+        return redirect()->route($user->role . '.dashboard')
+            ->with('success', 'Login berhasil!');
     }
 
+    // Logout
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Logout berhasil']);
+        return redirect()->route('login')->with('success', 'Kamu telah logout.');
     }
 }

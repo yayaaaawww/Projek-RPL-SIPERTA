@@ -11,6 +11,111 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
+    // ===== Room Chat Konsultasi (versi web) =====
+    public function roomKonsultasi(Konsultasi $konsultasi)
+    {
+        $user = Auth::user();
+
+        // Hanya petani pemilik atau ahli yang menangani
+        if ($konsultasi->petani_id !== $user->id && $konsultasi->ahli_id !== $user->id) {
+            abort(403, 'Kamu tidak punya akses ke chat ini.');
+        }
+
+        // Chat baru tersedia setelah konsultasi dijawab
+        if ($konsultasi->status === 'sent') {
+            return redirect()->back()->with('error', 'Chat tersedia setelah ahli menjawab konsultasi.');
+        }
+
+        $chat = ChatKonsultasi::where('konsultasi_id', $konsultasi->id)
+            ->with('pengirim')
+            ->orderBy('created_at')
+            ->get();
+
+        $konsultasi->load(['petani', 'ahli']);
+
+        return view('chat.konsultasi', [
+            'konsultasi' => $konsultasi,
+            'chat'       => $chat,
+        ]);
+    }
+
+    public function sendKonsultasiChat(Request $request, Konsultasi $konsultasi)
+    {
+        $user = Auth::user();
+
+        if ($konsultasi->petani_id !== $user->id && $konsultasi->ahli_id !== $user->id) {
+            abort(403);
+        }
+
+        if ($konsultasi->status === 'sent') {
+            abort(403, 'Chat belum tersedia.');
+        }
+
+        $request->validate([
+            'pesan' => 'required|string',
+        ]);
+
+        ChatKonsultasi::create([
+            'konsultasi_id' => $konsultasi->id,
+            'pengirim_id'   => $user->id,
+            'pesan'         => $request->pesan,
+            'status'        => 'sent',
+        ]);
+
+        return redirect()->route('konsultasi.chat', $konsultasi->id);
+    }
+
+    // ===== Room Chat Transaksi (petani <-> pedagang, setelah di-ACC) =====
+    public function roomTransaksi(Pesanan $pesanan)
+    {
+        $user = Auth::user();
+
+        if ($pesanan->petani_id !== $user->id && $pesanan->pedagang_id !== $user->id) {
+            abort(403, 'Kamu tidak punya akses ke chat ini.');
+        }
+
+        // Chat tersedia setelah pembayaran dikonfirmasi petani
+        if (! in_array($pesanan->status, ['validated', 'completed'])) {
+            return redirect()->back()->with('error', 'Chat tersedia setelah pesanan dikonfirmasi petani.');
+        }
+
+        $chat = ChatTransaksi::where('pesanan_id', $pesanan->id)
+            ->with('pengirim')
+            ->orderBy('created_at')
+            ->get();
+
+        $pesanan->load(['petani', 'pedagang', 'panen']);
+
+        return view('chat.transaksi', [
+            'pesanan' => $pesanan,
+            'chat'    => $chat,
+        ]);
+    }
+
+    public function sendTransaksiChat(Request $request, Pesanan $pesanan)
+    {
+        $user = Auth::user();
+
+        if ($pesanan->petani_id !== $user->id && $pesanan->pedagang_id !== $user->id) {
+            abort(403);
+        }
+        if (! in_array($pesanan->status, ['validated', 'completed'])) {
+            abort(403, 'Chat belum tersedia.');
+        }
+
+        $request->validate(['pesan' => 'required|string']);
+
+        ChatTransaksi::create([
+            'pesanan_id'  => $pesanan->id,
+            'pengirim_id' => $user->id,
+            'pesan'       => $request->pesan,
+            'status'      => 'sent',
+        ]);
+
+        return redirect()->route('transaksi.chat', $pesanan->id);
+    }
+
+    // ===== (API lama di bawah, tidak dipakai versi Blade) =====
     // Chat Konsultasi (Petani - Ahli)
     public function konsultasi(Konsultasi $konsultasi)
     {
