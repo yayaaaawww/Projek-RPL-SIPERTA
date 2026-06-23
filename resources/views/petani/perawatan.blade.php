@@ -27,58 +27,56 @@
                         <input type="date" class="form-control" name="tanggal_perawatan"
                                value="{{ old('tanggal_perawatan', date('Y-m-d')) }}" required>
                     </div>
-
-                    {{-- Group Checkbox Kegiatan (Total Pas 12 Pilihan) --}}
-                    <div class="mb-3">
+                   <div class="mb-3">
                         <label class="form-label font-weight-bold">Kegiatan yang dilakukan:</label>
                         
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="penyemaian" value="1" id="penyemaian" {{ old('penyemaian') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="penyemaian">1. Penyemaian Benih</label>
+                            <label class="form-check-label" for="penyemaian">Penyemaian Benih</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="penggemburan" value="1" id="penggemburan" {{ old('penggemburan') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="penggemburan">2. Penggemburan Tanah / Pembajakan</label>
+                            <label class="form-check-label" for="penggemburan">Penggemburan Tanah / Pembajakan</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="penanaman" value="1" id="penanaman" {{ old('penanaman') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="penanaman">3. Penanaman Bibit</label>
+                            <label class="form-check-label" for="penanaman">Penanaman Bibit</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="penyiraman" value="1" id="penyiraman" {{ old('penyiraman') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="penyiraman">4. Penyiraman Tanaman</label>
+                            <label class="form-check-label" for="penyiraman">Penyiraman Tanaman</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="pemangkasan" value="1" id="pemangkasan" {{ old('pemangkasan') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="pemangkasan">5. Pemangkasan Ranting / Daun</label>
+                            <label class="form-check-label" for="pemangkasan">Pemangkasan Ranting / Daun</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="pemupukan" value="1" id="pemupukan" {{ old('pemupukan') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="pemupukan">6. Pemupukan Utama</label>
+                            <label class="form-check-label" for="pemupukan">Pemupukan Utama</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="nutrisi" value="1" id="nutrisi" {{ old('nutrisi') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="nutrisi">7. Pemberian Nutrisi Tambahan / Vitamin</label>
+                            <label class="form-check-label" for="nutrisi">Pemberian Nutrisi Tambahan / Vitamin</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="penyiangan" value="1" id="penyiangan" {{ old('penyiangan') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="penyiangan">8. Penyiangan (Pembersihan Gulma)</label>
+                            <label class="form-check-label" for="penyiangan">Penyiangan (Pembersihan Gulma)</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="pestisida" value="1" id="pestisida" {{ old('pestisida') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="pestisida">9. Pengendalian Hama / Pestisida</label>
+                            <label class="form-check-label" for="pestisida">Pengendalian Hama / Pestisida</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="pemasangan_ajir" value="1" id="pemasangan_ajir" {{ old('pemasangan_ajir') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="pemasangan_ajir">10. Pemasangan Ajir / Penyangga</label>
+                            <label class="form-check-label" for="pemasangan_ajir">Pemasangan Ajir / Penyangga</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="pengecekan" value="1" id="pengecekan" {{ old('pengecekan') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="pengecekan">11. Monitoring / Pengecekan Rutin</label>
+                            <label class="form-check-label" for="pengecekan">Monitoring / Pengecekan Rutin</label>
                         </div>
                         <div class="form-check mb-2">
                             <input class="form-check-input" type="checkbox" name="pemanenan" value="1" id="pemanenan" {{ old('pemanenan') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="pemanenan">12. Pemanenan Hasil</label>
+                            <label class="form-check-label" for="pemanenan">Pemanenan Hasil</label>
                         </div>
                     </div>
 
