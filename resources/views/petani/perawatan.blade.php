@@ -28,33 +28,57 @@
                                value="{{ old('tanggal_perawatan', date('Y-m-d')) }}" required>
                     </div>
 
-                    {{-- Group Checkbox Kegiatan --}}
+                    {{-- Group Checkbox Kegiatan (Total Pas 12 Pilihan) --}}
                     <div class="mb-3">
-                        <label class="form-label">Kegiatan yang dilakukan:</label>
+                        <label class="form-label font-weight-bold">Kegiatan yang dilakukan:</label>
                         
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="penyemaian" value="1" id="penyemaian" {{ old('penyemaian') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="penyemaian">Penyemaian</label>
+                            <label class="form-check-label" for="penyemaian">1. Penyemaian Benih</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input" type="checkbox" name="penggemburan" value="1" id="penggemburan" {{ old('penggemburan') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="penggemburan">2. Penggemburan Tanah / Pembajakan</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input" type="checkbox" name="penanaman" value="1" id="penanaman" {{ old('penanaman') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="penanaman">3. Penanaman Bibit</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="penyiraman" value="1" id="penyiraman" {{ old('penyiraman') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="penyiraman">Penyiraman</label>
+                            <label class="form-check-label" for="penyiraman">4. Penyiraman Tanaman</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="pemangkasan" value="1" id="pemangkasan" {{ old('pemangkasan') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="pemangkasan">Pemangkasan</label>
+                            <label class="form-check-label" for="pemangkasan">5. Pemangkasan Ranting / Daun</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="pemupukan" value="1" id="pemupukan" {{ old('pemupukan') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="pemupukan">Pemupukan</label>
+                            <label class="form-check-label" for="pemupukan">6. Pemupukan Utama</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input" type="checkbox" name="nutrisi" value="1" id="nutrisi" {{ old('nutrisi') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="nutrisi">7. Pemberian Nutrisi Tambahan / Vitamin</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input" type="checkbox" name="penyiangan" value="1" id="penyiangan" {{ old('penyiangan') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="penyiangan">8. Penyiangan (Pembersihan Gulma)</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input" type="checkbox" name="pestisida" value="1" id="pestisida" {{ old('pestisida') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="pestisida">9. Pengendalian Hama / Pestisida</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input" type="checkbox" name="pemasangan_ajir" value="1" id="pemasangan_ajir" {{ old('pemasangan_ajir') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="pemasangan_ajir">10. Pemasangan Ajir / Penyangga</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input" type="checkbox" name="pengecekan" value="1" id="pengecekan" {{ old('pengecekan') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="pengecekan">Pengecekan</label>
+                            <label class="form-check-label" for="pengecekan">11. Monitoring / Pengecekan Rutin</label>
                         </div>
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="penyiangan" value="1" id="penyiangan" {{ old('penyiangan') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="penyiangan">Penyiangan</label>
+                            <input class="form-check-input" type="checkbox" name="pemanenan" value="1" id="pemanenan" {{ old('pemanenan') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="pemanenan">12. Pemanenan Hasil</label>
                         </div>
                     </div>
 
@@ -68,30 +92,37 @@
             <div class="card activity-card">
                 <div class="card-header">Riwayat Log Harian</div>
                 <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr><th>Tanggal</th><th>Kegiatan</th><th>Catatan</th></tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($perawatan as $p)
-                                <tr>
-                                    <td>{{ \Carbon\Carbon::parse($p->tanggal_perawatan)->format('d M Y') }}</td>
-                                    <td>
-                                        @if ($p->penyemaian) <span class="badge bg-info">Semai</span> @endif
-                                        @if ($p->penyiraman) <span class="badge bg-info">Siram</span> @endif
-                                        @if ($p->pemangkasan) <span class="badge bg-info">Pangkas</span> @endif {{-- Diubah agar sinkron --}}
-                                        @if ($p->pemupukan) <span class="badge bg-success">Pupuk</span> @endif
-                                        @if ($p->pengecekan) <span class="badge bg-warning text-dark">Cek</span> @endif
-                                        @if ($p->penyiangan) <span class="badge bg-warning text-dark">Siang</span> @endif
-                                        @if ($p->pestisida) <span class="badge bg-danger">Pestisida</span> @endif
-                                    </td>
-                                    <td>{{ $p->catatan ?? '-' }}</td>
-                                </tr>
-                            @empty
-                                <tr><td colspan="3" class="text-center text-muted">Belum ada log harian.</td></tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr><th>Tanggal</th><th>Kegiatan</th><th>Catatan</th></tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($perawatan as $p)
+                                    <tr>
+                                        <td>{{ \Carbon\Carbon::parse($p->tanggal_perawatan)->format('d M Y') }}</td>
+                                        <td>
+                                            @if ($p->penyemaian) <span class="badge bg-info">Semai</span> @endif
+                                            @if ($p->penggemburan) <span class="badge bg-secondary">Gembur</span> @endif
+                                            @if ($p->penanaman) <span class="badge bg-dark">Tanam</span> @endif
+                                            @if ($p->penyiraman) <span class="badge bg-info">Siram</span> @endif
+                                            @if ($p->pemangkasan) <span class="badge bg-info">Pangkas</span> @endif
+                                            @if ($p->pemupukan) <span class="badge bg-success">Pupuk</span> @endif
+                                            @if ($p->nutrisi) <span class="badge bg-success">Nutrisi</span> @endif
+                                            @if ($p->penyiangan) <span class="badge bg-warning text-dark">Penyiangan</span> @endif
+                                            @if ($p->pestisida) <span class="badge bg-danger">Pestisida</span> @endif
+                                            @if ($p->pemasangan_ajir) <span class="badge bg-secondary">Ajir</span> @endif
+                                            @if ($p->pengecekan) <span class="badge bg-warning text-dark">Cek</span> @endif
+                                            @if ($p->pemanenan) <span class="badge bg-primary">Panen</span> @endif
+                                        </td>
+                                        <td>{{ $p->catatan ?? '-' }}</td>
+                                    </tr>
+                                @empty
+                                    <tr><td colspan="3" class="text-center text-muted">Belum ada log harian.</td></tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
